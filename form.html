@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset='utf-8' />
+<link href="//cdn.ubc.ca/clf/7.0.4/css/ubc-clf-full.min.css" rel="stylesheet">
+<script type='text/javascript' src='http://collab.sites.olt.ubc.ca/wp-includes/js/jquery/jquery.js?ver=1.12.4'></script>
+<script>
+
+	jQuery(document).ready(function() {
+		getEventFeed();
+	});
+
+	function getEventFeed(){
+		jQuery.ajax({
+			url: "//forms.mednet.med.ubc.ca/sites/alumni/_api/Web/lists/GetByTitle('MSACBookingForm')/fields?$filter=CanBeDeleted%20eq%20true%20or%20StaticName%20eq%20%27Title%27",
+			method: "GET",
+			headers: { "Accept": "application/json; odata=verbose" },
+			success: function (data) {
+				parseFeed(data.d.results)
+			},
+			error: function (data) {
+			   console.log("error, getEventFeed "+JSON.stringify(data));
+			}
+		});
+	}
+
+	function parseFeed(data) {
+		console.log(data);
+		jQuery(data).each(function(){
+			// document.write(this.Title+"<br>");
+		});
+		createForm();
+	}
+
+	function createForm(){
+		
+	}
+	function getToday(){
+		var today = new Date();
+		var dd = today.getDate();
+		var mm = today.getMonth()+1; //January is 0!
+		var yyyy = today.getFullYear();
+		return today;
+	}
+	console.log(getToday());
+</script>
+
+</head>
+<body>
+
+	<form>
+<!-- 		<fieldset>
+			<label>today's date</label>
+			<input type="date"></input>
+		</fieldset> -->
+		<fieldset>
+		<label>MUS Club</label>
+			<input type="text" id="MusClub" name="MusClub" placeholder="Club"></input>	
+		<label>Title of Event</label>
+			<input type="text" id="EventTitle" name="EventTitle" placeholder="Event Title"></input>
+		</fieldset>
+		<fieldset>
+			<label>Student Event Organizer</label>
+			<input type="text" id="StudentEventOrganizerFirst" name="StudentEventOrganizerFirst"></input>
+			<input type="text" id="StudentEventOrganizerLast" name="StudentEventOrganizerLast"></input>
+			<label>Student Email Organizer</label>
+			<input type="text" id="OrganizerEmail" name="OrganizerEmail"></input>
+			<div class="help-block">Student event organizer may need to be responsible for building and equipment security at the end of the event.</div>
+		</fieldset>
+
+		<fieldset>
+			<legend>Ideal Event Date</legend>
+			<input id="EventDate" name="EventDate" type="date"></date>
+			<label>Ideal Event times</label>
+				<label>Start</label>
+					<input id="start-hour" name="start-hour" type="number"><span>:</span><input type="number"> <input type="select"><option>AM</option><option>PM</option>
+				<label>Start VC</label>
+					15min increments
+				<label>End VC</label>
+					15min increments
+				<label>End</label>
+					15min increments
+			</fieldset>
+		<label>Number of Attendees Expected</label>
+		<label>Ideal Room for Event</label>
+			MSAC VC Room, B08 – VC (10-60 people)
+			Latham Hall, 110 – VC (10-40 people)
+			Hardwick Hall, 104 – VC (20-80 people)
+			Alumni Room, 103 – VC (2-15 table/15-30 rows)
+			UBCMJ Meeting Room, B10 - VC Anywhere only (2-7 people)
+			Music Room, B09 – VC Anywhere only (2-15 people)
+
+			Any room with VC that is available
+			Any room available, VC is not needed
+		<label>Videoconference To</label>
+			Victoria – MSAC IMP – RJH 246
+			Victoria – UVic Medical Sciences Building (1st & 2nd Years)
+			Victoria – Victoria General Hospital
+			Prince George – UNBC Northern Health Sciences Centre (1st & 2nd Years)
+			Prince George – UHNBC (hospital)
+			Kelowna – UBCO Health Sciences Centre (1st & 2nd Years)
+			Kelowna – Kelowna General Hospital
+			Other:  Click here to enter other VC location.
+			
+			VC Anywhere*
+			Participants can connect to your event via their computers, laptops, iPhones or android phones.
+			*Organizer must appoint moderator to attend at MSAC with laptop to monitor VC Anywhere participation.
+		<label>Equipment Needs</label>
+			Automatically added to all VCs
+			<ul>
+				<li>Microphone - for distributed sites</li>
+				<li>Laptop for presentation on screen</li>
+			</ul>
+			Sound system
+			Movie will be shown
+			Laptop – MSAC has 4 to lend
+			Plasma Screen
+			Wired internet (MSAC has WiFi)
+			No equipment required 
+		<label>Room Set-Up</label>
+			Meeting around a table 
+			Chairs in rows (theatre seating)
+			Tables/counter for food
+
+		<label>OTHER NOTES & INFO to your MSAC support team:</label>
+		<textarea name="notes" type="textarea" rows="6" cols="50"></textarea>
+
+	</form>
+
+</body>
+</html>
+	

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset='utf-8' />
+<link href='dist/cal.min.css' rel='stylesheet' />
+<link href='dist/cal.print.min.css' rel='stylesheet' media='print' />
+<script src='dist/cal.min.js'></script>
+<script>
+
+var events = [];
+	jQuery(document).ready(function() {
+
+		getEventFeed();
+		
+	});
+
+
+	function getEventFeed(){
+		jQuery.ajax({
+		        url: "https://forms.mednet.med.ubc.ca/sites/alumni/_api/Web/lists/GetByTitle('MSACBookingForm')/items",
+		        method: "GET",
+		        headers: { "Accept": "application/json; odata=verbose" },
+		        success: function (data) {
+		        	parseFeed(data.d.results)
+		        },
+		        error: function (data) {
+		           console.log(JSON.stringify(data));
+		        }
+		});
+	}
+
+	function parseFeed(data) {
+		jQuery(data).each(function(){
+			var event = {title:"",start:"",end:"",location:""};
+			var start = this.EventDate+"T"+this.StartTime;
+			var end = this.EventDate+"T"+this.EndTime;
+			event.title=this.TitleOfEvent;
+			event.start=start;
+			event.end=end;
+			event.location=this.IdealRoomForEvent;
+			createEvent(event);
+			console.log(this,event);
+		});
+		createCalendar();
+	}
+	function createEvent(event){
+		events.push(event);
+		// console.log(events);
+	}
+	function createCalendar(){
+		jQuery('#calendar').fullCalendar({
+			defaultDate: moment(),
+			editable: false,
+			eventLimit: true, // allow "more" link when too many events
+			events: events
+		});		
+	}
+
+</script>
+
+</head>
+<body>
+
+	<div id='calendar'></div>
+
+</body>
+</html>
