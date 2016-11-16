@@ -6,9 +6,18 @@ module.exports = function(grunt) {
     
     uglify:{
       js:{
-        src:['libs/fullcalendar/lib/moment.min.js', 'libs/fullcalendar/lib/jquery.min.js','libs/fullcalendar/fullcalendar.min.js'],
+        src:[
+         'libs/fullcalendar/lib/moment.min.js',
+         'libs/fullcalendar/lib/jquery.min.js',
+         'libs/fullcalendar/fullcalendar.min.js',
+         'libs/jQuery.ptTimeSelect/src/jquery.ptTimeSelect.js',
+        ],
         dest:'dist/cal.min.js',
-      }
+      },
+      // ie:{
+      //   src:['libs/nodep-date-input-polyfill.js'],
+      //   dest:'dist/ie.js',
+      // }
     },
     cssmin: {
       options: {
@@ -17,14 +26,22 @@ module.exports = function(grunt) {
       },
       target: {
         files: {
-          'dist/cal.min.css': ['libs/fullcalendar/fullcalendar.css']
+          'dist/cal.min.css': [
+          'libs/fullcalendar/fullcalendar.css',
+          'libs/jQuery.ptTimeSelect/src/jquery.ptTimeSelect.css'
+          ]
         }
       },
       targetPrint: {
         files: {
           'dist/cal.print.min.css': ['libs/fullcalendar/fullcalendar.print.css']
         }
-      }
+      },
+      // targetIE: {
+      //   files: {
+      //     'dist/ie.css': []
+      //   }
+      // }
     }
   });
 

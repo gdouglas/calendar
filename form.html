@@ -3,11 +3,18 @@
 <head>
 <meta charset='utf-8' />
 <link href="//cdn.ubc.ca/clf/7.0.4/css/ubc-clf-full.min.css" rel="stylesheet">
+<link href="dist/cal.min.css" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.22/themes/redmond/jquery-ui.css" />
+
 <script type='text/javascript' src='http://collab.sites.olt.ubc.ca/wp-includes/js/jquery/jquery.js?ver=1.12.4'></script>
+<script src='dist/cal.min.js'></script>
+<script src="dist/ie.js" async></script>
+
 <script>
 
 	jQuery(document).ready(function() {
 		getEventFeed();
+        jQuery('input[class="time"]').ptTimeSelect();
 	});
 
 	function getEventFeed(){
@@ -74,9 +81,9 @@
 			<input id="EventDate" name="EventDate" type="date"></date>
 			<label for="room-start-hour">Ideal Event times</label>
 				<label>Room Start Time</label>
-				<input type="time"></input>
+				<input class="time"></input>
 				<label for="room-end-hour">Room End Time</label>
-				<input type="time"></input>
+				<input class="time"></input>
 
 				<label for="TimeSame">Videoconference time same as room time?</label>
 				<input type="checkbox" id="TimeSame" name="TimeSame" value="yes" checked></input><span id="TimeSameSpan">Yes</span>
@@ -85,10 +92,10 @@
 
 
 				<label for="vc-start-hour">Videoconference Start Time</label>
-				<input type="time"></input>
+				<input class="time"></input>
 
 				<label for="vc-start-hour">Videoconference End Time</label>
-				<input type="time"></input>
+				<input class="time"></input>
 
 			</fieldset>
 		<fieldset class="control-group">
