@@ -49,82 +49,155 @@
 <body>
 
 	<form>
-<!-- 		<fieldset>
+<!-- 		<fieldset class="control-group">
 			<label>today's date</label>
 			<input type="date"></input>
 		</fieldset> -->
-		<fieldset>
-		<label>MUS Club</label>
+		<fieldset class="control-group">
+		<label for="MusClub">MUS Club</label>
 			<input type="text" id="MusClub" name="MusClub" placeholder="Club"></input>	
-		<label>Title of Event</label>
+		<label for="EventTitle">Title of Event</label>
 			<input type="text" id="EventTitle" name="EventTitle" placeholder="Event Title"></input>
 		</fieldset>
-		<fieldset>
-			<label>Student Event Organizer</label>
-			<input type="text" id="StudentEventOrganizerFirst" name="StudentEventOrganizerFirst"></input>
-			<input type="text" id="StudentEventOrganizerLast" name="StudentEventOrganizerLast"></input>
-			<label>Student Email Organizer</label>
+		<fieldset class="control-group">
+			<label for="StudentEventOrganizerFirst">Student Event Organizer Name</label>
+			<input type="text" id="StudentEventOrganizerFirst" name="StudentEventOrganizerFirst" placeholder="First"></input>
+			<input type="text" id="StudentEventOrganizerLast" name="StudentEventOrganizerLast" placeholder="Last"></input>
+			<label for="OrganizerEmail">Student Organizer Email</label>
 			<input type="text" id="OrganizerEmail" name="OrganizerEmail"></input>
 			<div class="help-block">Student event organizer may need to be responsible for building and equipment security at the end of the event.</div>
 		</fieldset>
 
-		<fieldset>
-			<legend>Ideal Event Date</legend>
+		<fieldset class="control-group">
+			<legend>Event Time</legend>
+			<label for="EventDate">Ideal Event Date</label>
 			<input id="EventDate" name="EventDate" type="date"></date>
-			<label>Ideal Event times</label>
-				<label>Start</label>
-					<input id="start-hour" name="start-hour" type="number"><span>:</span><input type="number"> <input type="select"><option>AM</option><option>PM</option>
-				<label>Start VC</label>
-					15min increments
-				<label>End VC</label>
-					15min increments
-				<label>End</label>
-					15min increments
-			</fieldset>
-		<label>Number of Attendees Expected</label>
-		<label>Ideal Room for Event</label>
-			MSAC VC Room, B08 – VC (10-60 people)
-			Latham Hall, 110 – VC (10-40 people)
-			Hardwick Hall, 104 – VC (20-80 people)
-			Alumni Room, 103 – VC (2-15 table/15-30 rows)
-			UBCMJ Meeting Room, B10 - VC Anywhere only (2-7 people)
-			Music Room, B09 – VC Anywhere only (2-15 people)
+			<label for="room-start-hour">Ideal Event times</label>
+				<label>Room Start Time</label>
+				<input type="time"></input>
+				<label for="room-end-hour">Room End Time</label>
+				<input type="time"></input>
 
-			Any room with VC that is available
-			Any room available, VC is not needed
-		<label>Videoconference To</label>
-			Victoria – MSAC IMP – RJH 246
-			Victoria – UVic Medical Sciences Building (1st & 2nd Years)
-			Victoria – Victoria General Hospital
-			Prince George – UNBC Northern Health Sciences Centre (1st & 2nd Years)
-			Prince George – UHNBC (hospital)
-			Kelowna – UBCO Health Sciences Centre (1st & 2nd Years)
-			Kelowna – Kelowna General Hospital
-			Other:  Click here to enter other VC location.
-			
+				<label for="TimeSame">Videoconference time same as room time?</label>
+				<input type="checkbox" id="TimeSame" name="TimeSame" value="yes" checked></input><span id="TimeSameSpan">Yes</span>
+				
+				
+
+
+				<label for="vc-start-hour">Videoconference Start Time</label>
+				<input type="time"></input>
+
+				<label for="vc-start-hour">Videoconference End Time</label>
+				<input type="time"></input>
+
+			</fieldset>
+		<fieldset class="control-group">
+			<label for="NumberAttendees">Number of Attendees Expected</label>
+			<input id="NumberAttendees" type="number"></input>
+		</fieldset>
+		<fieldset class="control-group">
+			<legend>Ideal Room for Event</legend>
+				<label class="checkbox">
+					<input name="room" class="checkbox" type="checkbox" value="MSAC VC Room, B08 – VC (10-60 people)">MSAC VC Room, B08 – VC (10-60 people)</input>
+				</label>
+				<label class="checkbox">
+					<input name="room" class="checkbox" type="checkbox" value="Latham Hall, 110 – VC (10-40 people)">Latham Hall, 110 – VC (10-40 people)</input>
+				</label>
+				<label class="checkbox">
+					<input name="room" class="checkbox" type="checkbox" value="Hardwick Hall, 104 – VC (20-80 people)">Hardwick Hall, 104 – VC (20-80 people)</input>
+				</label>
+				<label class="checkbox">
+					<input name="room" class="checkbox" type="checkbox" value="Alumni Room, 103 – VC (2-15 table/15-30 rows)">Alumni Room, 103 – VC (2-15 table/15-30 rows)</input>
+				</label>
+				<label class="checkbox">
+					<input name="room" class="checkbox" type="checkbox" value="UBCMJ Meeting Room, B10 - VC Anywhere only (2-7 people)">UBCMJ Meeting Room, B10 - VC Anywhere only (2-7 people)</input>
+				</label>
+				<label class="checkbox">
+					<input name="room" class="checkbox" type="checkbox" value="Music Room, B09 – VC Anywhere only (2-15 people)">Music Room, B09 – VC Anywhere only (2-15 people)</input>
+				</label>					
+				<label class="checkbox">
+					<input name="room" class="checkbox" type="checkbox" value="Any room with VC that is available">Any room with VC that is available</input>
+				</label>
+				<label class="checkbox">
+					<input name="room" class="checkbox" type="checkbox" value="Any room available, VC is not needed">Any room available, VC is not needed</input>
+				</label>
+		</fieldset>
+		<fieldset class="control-group">
+			<legend>Videoconference To</legend>
+			<label class="checkbox">
+				<input type="checkbox" value="Victoria – MSAC IMP – RJH 246">Victoria – MSAC IMP – RJH 246
+			</label>
+			<label class="checkbox">
+			  <input type="checkbox" id="UVic" value="Victoria – UVic Medical Sciences Building (1st & 2nd Years)"> Victoria – UVic Medical Sciences Building (1st & 2nd Years)
+			</label>
+			<label class="checkbox">
+				<input name="VideoTo" class="checkbox" type="checkbox" value="Victoria – Victoria General Hospital">Victoria – Victoria General Hospital</input>
+			</label>
+			<label class="checkbox">
+			<input name="VideoTo" class="checkbox" type="checkbox" value="Prince George – UNBC Northern Health Sciences Centre (1st & 2nd Years)">Prince George – UNBC Northern Health Sciences Centre (1st & 2nd Years)</input>\
+			</label>
+			<label class="checkbox">
+				<input name="VideoTo" class="checkbox" type="checkbox" value="Prince George – UHNBC (hospital)">Prince George – UHNBC (hospital)</input>
+			</label>
+			<label class="checkbox">
+				<input name="VideoTo" class="checkbox" type="checkbox" value="Kelowna – UBCO Health Sciences Centre (1st & 2nd Years)">	Kelowna – UBCO Health Sciences Centre (1st & 2nd Years)</input>
+			</label>
+			<label class="checkbox">
+				<input name="VideoTo" class="checkbox" type="checkbox" value="Kelowna – Kelowna General Hospital">Kelowna – Kelowna General Hospital</input>
+			</label>
+			<label class="checkbox">
+				<input name="VideoTo" class="checkbox" type="checkbox" value="Other:  Click here to enter other VC location.">Other:  Click here to enter other VC location.</input>
+			</label>
 			VC Anywhere*
-			Participants can connect to your event via their computers, laptops, iPhones or android phones.
-			*Organizer must appoint moderator to attend at MSAC with laptop to monitor VC Anywhere participation.
-		<label>Equipment Needs</label>
+			<label class="checkbox">
+				<input name="VideoTo" class="checkbox" type="checkbox" value="Participants can connect to your event via their computers, laptops, iPhones or android phones.">Participants can connect to your event via their computers, laptops, iPhones or android phones.</input>
+			</label>
+			<div>*Organizer must appoint moderator to attend at MSAC with laptop to monitor VC Anywhere participation.</div>
+		</label>
+		</fieldset>
+		<fieldset class="control-group">
+			<legend>Equipment Needs</legend>
 			Automatically added to all VCs
 			<ul>
 				<li>Microphone - for distributed sites</li>
 				<li>Laptop for presentation on screen</li>
 			</ul>
-			Sound system
-			Movie will be shown
-			Laptop – MSAC has 4 to lend
-			Plasma Screen
-			Wired internet (MSAC has WiFi)
-			No equipment required 
-		<label>Room Set-Up</label>
-			Meeting around a table 
-			Chairs in rows (theatre seating)
-			Tables/counter for food
-
-		<label>OTHER NOTES & INFO to your MSAC support team:</label>
-		<textarea name="notes" type="textarea" rows="6" cols="50"></textarea>
-
+			<label class="checkbox">
+				<input type="checkbox" value="Sound system">Sound system</input>
+			</label>
+			<label class="checkbox">
+				<input type="checkbox" value="Movie will be shown">Movie will be shown</input>
+			</label>
+			<label class="checkbox">
+				<input type="checkbox" value="Laptop – MSAC has 4 to lend">Laptop – MSAC has 4 to lend</input>
+			</label>
+			<label class="checkbox">
+				<input type="checkbox" value="Plasma Screen">Plasma Screen</input>
+			</label>
+			<label class="checkbox">
+				<input type="checkbox" value="Wired internet (MSAC has WiFi)">Wired internet (MSAC has WiFi)</input>
+			</label>
+			<label class="checkbox">
+				<input type="checkbox" value="No equipment required">No equipment required</input>
+			</label>
+		</fieldset>
+		<fieldset class="control-group">
+			<legend>Room Set-Up</legend>
+			<label class="checkbox">
+				<input type="checkbox" value="Meeting around a table">Meeting around a table</input>
+			</label>
+			<label class="checkbox">
+				<input type="checkbox" value="Chairs in rows (theatre seating">Chairs in rows (theatre seating</input>
+			</label>
+			<label class="checkbox">
+				<input type="checkbox" value="Tables/counter for foo">Tables/counter for foo</input>
+			</label>
+		</fieldset>			
+		<fieldset class="control-group">
+			<label for="notes">OTHER NOTES &amp; INFO to your MSAC support team:</label>
+			<textarea name="notes" type="textarea" rows="6" cols="50"></textarea>
+		</fieldset>
+		<button type="submit" class="btn btn-primary">Submit</button>
 	</form>
 
 </body>
