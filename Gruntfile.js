@@ -3,7 +3,7 @@ module.exports = function(grunt) {
   // Project configuration.
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
-    
+
     uglify:{
       js:{
         src:[
@@ -11,6 +11,7 @@ module.exports = function(grunt) {
          'libs/fullcalendar/lib/jquery.min.js',
          'libs/fullcalendar/fullcalendar.min.js',
          'libs/jQuery.ptTimeSelect/src/jquery.ptTimeSelect.js',
+         'libs/parsleyjs/dist/parsley.min.js'
         ],
         dest:'dist/cal.min.js',
       },
@@ -28,7 +29,8 @@ module.exports = function(grunt) {
         files: {
           'dist/cal.min.css': [
           'libs/fullcalendar/fullcalendar.css',
-          'libs/jQuery.ptTimeSelect/src/jquery.ptTimeSelect.css'
+          'libs/jQuery.ptTimeSelect/src/jquery.ptTimeSelect.css',
+          'libs/parsleyjs/src/parsley.css'
           ]
         }
       },
