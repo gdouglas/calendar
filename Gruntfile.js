@@ -5,20 +5,15 @@ module.exports = function(grunt) {
     pkg: grunt.file.readJSON('package.json'),
 
     uglify:{
-      caljs:{
+      js:{
         src:[
          'libs/fullcalendar/lib/moment.min.js',
          'libs/fullcalendar/lib/jquery.min.js',
          'libs/fullcalendar/fullcalendar.min.js',
+         'libs/jQuery.ptTimeSelect/src/jquery.ptTimeSelect.js',
+         'libs/parsleyjs/dist/parsley.min.js'
         ],
         dest:'dist/cal.min.js',
-      },
-      formjs:{
-        src:[
-          'libs/jQuery.ptTimeSelect/src/jquery.ptTimeSelect.js',
-          'libs/parsleyjs/dist/parsley.min.js'
-        ],
-        dest:"dist/form.min.js"
       },
       // ie:{
       //   src:['libs/nodep-date-input-polyfill.js'],
