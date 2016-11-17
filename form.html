@@ -13,7 +13,7 @@
 <script>
 
 	jQuery(document).ready(function() {
-		getEventFeed();
+		//getEventFeed();
         jQuery('input[class="time"]').ptTimeSelect();
 	});
 	$(function () {
@@ -105,13 +105,8 @@
 
 				<label for="TimeSame">Videoconference time same as room time?</label>
 				<input type="checkbox" id="TimeSame" name="TimeSame" value="yes" checked required=""></input><span id="TimeSameSpan">Yes</span>
-				
-				
-
-
 				<label for="vc-start-hour">Videoconference Start Time</label>
 				<input class="time" required=""></input>
-
 				<label for="vc-start-hour">Videoconference End Time</label>
 				<input class="time" required=""></input>
 
@@ -152,10 +147,10 @@
 		<fieldset class="control-group">
 			<legend>Videoconference To</legend>
 			<label class="checkbox">
-				<input type="checkbox" value="Victoria – MSAC IMP – RJH 246">Victoria – MSAC IMP – RJH 246
+				<input name="VideoTo" type="checkbox" value="Victoria – MSAC IMP – RJH 246">Victoria – MSAC IMP – RJH 246
 			</label>
 			<label class="checkbox">
-			  <input type="checkbox" id="UVic" value="Victoria – UVic Medical Sciences Building (1st & 2nd Years)"> Victoria – UVic Medical Sciences Building (1st & 2nd Years)
+			  <input name="VideoTo" type="checkbox" id="UVic" value="Victoria – UVic Medical Sciences Building (1st & 2nd Years)"> Victoria – UVic Medical Sciences Building (1st & 2nd Years)
 			</label>
 			<label class="checkbox">
 				<input name="VideoTo" class="checkbox" type="checkbox" value="Victoria – Victoria General Hospital">Victoria – Victoria General Hospital</input>
@@ -190,34 +185,34 @@
 				<li>Laptop for presentation on screen</li>
 			</ul>
 			<label class="checkbox">
-				<input type="checkbox" value="Sound system">Sound system</input>
+				<input name="equipment" type="checkbox" value="Sound system">Sound system</input>
 			</label>
 			<label class="checkbox">
-				<input type="checkbox" value="Movie will be shown">Movie will be shown</input>
+				<input name="equipment" type="checkbox" value="Movie will be shown">Movie will be shown</input>
 			</label>
 			<label class="checkbox">
-				<input type="checkbox" value="Laptop – MSAC has 4 to lend">Laptop – MSAC has 4 to lend</input>
+				<input name="equipment" type="checkbox" value="Laptop – MSAC has 4 to lend">Laptop – MSAC has 4 to lend</input>
 			</label>
 			<label class="checkbox">
-				<input type="checkbox" value="Plasma Screen">Plasma Screen</input>
+				<input name="equipment" type="checkbox" value="Plasma Screen">Plasma Screen</input>
 			</label>
 			<label class="checkbox">
-				<input type="checkbox" value="Wired internet (MSAC has WiFi)">Wired internet (MSAC has WiFi)</input>
+				<input name="equipment" type="checkbox" value="Wired internet (MSAC has WiFi)">Wired internet (MSAC has WiFi)</input>
 			</label>
 			<label class="checkbox">
-				<input type="checkbox" value="No equipment required">No equipment required</input>
+				<input name="equipment" type="checkbox" value="No equipment required">No equipment required</input>
 			</label>
 		</fieldset>
 		<fieldset class="control-group">
 			<legend>Room Set-Up</legend>
 			<label class="checkbox">
-				<input type="checkbox" value="Meeting around a table">Meeting around a table</input>
+				<input name="set-up" type="checkbox" value="Meeting around a table">Meeting around a table</input>
 			</label>
 			<label class="checkbox">
-				<input type="checkbox" value="Chairs in rows (theatre seating">Chairs in rows (theatre seating</input>
+				<input name="set-up" type="checkbox" value="Chairs in rows (theatre seating">Chairs in rows (theatre seating</input>
 			</label>
 			<label class="checkbox">
-				<input type="checkbox" value="Tables/counter for foo">Tables/counter for foo</input>
+				<input name="set-up" type="checkbox" value="Tables/counter for foo">Tables/counter for foo</input>
 			</label>
 		</fieldset>			
 		<fieldset class="control-group">
