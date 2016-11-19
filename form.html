@@ -11,20 +11,28 @@
 		jQuery(document).ready(function() {
 			//add time widget
 			jQuery('input[class="time"]').ptTimeSelect();
+			// hide elements that should be hidden
+			jQuery('.vc-same').hide();
 			//show hide VC elements on check, disable required field for vc	
 			jQuery('#TimeSame').click(function() {
 				//hide or show elements
-				jQuery('.vc').slideToggle("fast");
+				jQuery('.vc, .vc-same').slideToggle("fast");
 				if (this.checked) {
 					//show VC elements
 					jQuery('.vc input').each(function(){
 						//enable vc elements
-						jQuery(this).prop('disabled', false)
+						jQuery(this).prop('disabled', false);
+					});
+					jQuery('vc-same input').each(function(){
+						jQuery(this).prop('disabled', true);
 					});
 				} else {
 					jQuery('.vc input').each(function(){
 						//disable the inputs
-						jQuery(this).prop('disabled', true)
+						jQuery(this).prop('disabled', true);
+					});
+					jQuery('vc-same input').each(function(){
+						jQuery(this).prop('disabled', false);
 					});
 				}
 			});
@@ -106,12 +114,16 @@
 			<input class="time" id="room-start" name="room-start" data-parsley-required="true">
 			<label for="room-end">Room End Time <span class="required">*</span></label> 
 			<input class="time" id="room-end" name="room-end" data-parsley-required="true">
-			<label for="TimeSame">Videoconference time same as room time?</label> 
-			<input checked id="TimeSame" name="TimeSame" type="checkbox" value="yes"><span id="TimeSameSpan">Yes</span>
-			<label for="vc-start-hour">Videoconference Start Time <span class="required">*</span></label> 
-			<input class="time" id="vc-start-hour" name="vc-start-hour" data-parsley-required="true">
-			<label for="vc-end-hour">Videoconference End Time <span class="required">*</span></label> 
-			<input class="time" id="vc-end-hour" name="vc-end-hour" data-parsley-required="true">
+			<div>
+				<label for="TimeSame">Videoconference time same as room time?</label> 
+				<input id="TimeSame" name="TimeSame" type="checkbox" checked><span id="TimeSameSpan">Yes</span>
+			</div>
+			<div class="vc-same">
+				<label for="vc-start-hour">Videoconference Start Time <span class="required">*</span></label> 
+				<input class="time" id="vc-start-hour" name="vc-start-hour" data-parsley-required="true">
+				<label for="vc-end-hour">Videoconference End Time <span class="required">*</span></label> 
+				<input class="time" id="vc-end-hour" name="vc-end-hour" data-parsley-required="true">
+			</div>
 		</fieldset>
 		<fieldset class="control-group">
 			<label for="NumberAttendees">Number of Attendees Expected <span class="required">*</span></label> 
@@ -169,7 +181,9 @@
 					<input class="checkbox"  data-parsley-required="true" data-parsley-class-handler="#videoTo" name="VideoTo" type="checkbox" value="Kelowna – Kelowna General Hospital">Kelowna – Kelowna General Hospital
 				</label>
 				<label class="checkbox">
-					<input class="checkbox"  data-parsley-required="true" data-parsley-class-handler="#videoTo" name="VideoTo" type="checkbox" value="Other: Click here to enter other VC location.">Other: Click here to enter other VC location.</label> VC Anywhere*
+					<input class="checkbox other-vc"  data-parsley-required="true" data-parsley-class-handler="#videoTo" name="VideoTo" type="checkbox" value="Other: Click here to enter other VC location.">Other: Click here to enter other VC location.</label> VC Anywhere*
+				<label>Other VC Location</label>
+				<input class="other-vc-input" data-parsley-class-handler="#videoTo"></input>
 				<label class="checkbox">
 					<input class="checkbox"  data-parsley-required="true" name="VideoTo" type="checkbox" value="Participants can connect to your event via their computers, laptops, iPhones or android phones."> Participants can connect to your event via their computers, laptops, iPhones or android phones.
 				</label>
