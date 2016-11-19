@@ -8,70 +8,66 @@
 	<script src='http://collab.sites.olt.ubc.ca/wp-includes/js/jquery/jquery.js?ver=1.12.4' type='text/javascript'>	</script>
 	<script src='dist/form.min.js'></script>
 	<script>
-	         jQuery(document).ready(function() {
-	             jQuery('input[class="time"]').ptTimeSelect();
-	                   jQuery('#TimeSame').click(function() {
-	                       //show hide VC elements on check, disable required field for vc
-	                       jQuery('.vc').slideToggle("fast");
-	                       if (this.checked) {
-	                       	jQuery('.vc input').each(function(){
-	                       		// jQuery(this).data("parsley-required",true);
-	                       		jQuery(this).prop('disabled', false)
-	                       		console.log(jQuery(this).data("parsley-required"));
-	                       	});
-	                       } else {
-	                       	jQuery('.vc input').each(function(){
-	                       		// jQuery(this).data("parsley-required",false);
-	                       		jQuery(this).prop('disabled', true)
-	                       		console.log(jQuery(this).data("parsley-required"));
-	                       	});
-	                       }
-	                   });
-	         });
+		jQuery(document).ready(function() {
+			//add time widget
+			jQuery('input[class="time"]').ptTimeSelect();
+			//show hide VC elements on check, disable required field for vc	
+			jQuery('#TimeSame').click(function() {
+				//hide or show elements
+				jQuery('.vc').slideToggle("fast");
+				if (this.checked) {
+					//show VC elements
+					jQuery('.vc input').each(function(){
+						//enable vc elements
+						jQuery(this).prop('disabled', false)
+					});
+				} else {
+					jQuery('.vc input').each(function(){
+						//disable the inputs
+						jQuery(this).prop('disabled', true)
+					});
+				}
+			});
+		});
 
-	         jQuery(function () {
-	           jQuery('#msacBookingForm')
-	           .parsley({
-					excluded: 'input[type=button], input[type=submit], input[type=reset], input[type=hidden], :disabled'
-				})
-	           .on('field:validated', function() {
-	             var ok = jQuery('.parsley-error').length === 0;
-	             jQuery('.bs-callout-info').toggleClass('hidden', !ok);
-	             jQuery('.bs-callout-warning').toggleClass('hidden', ok);
-	           })
-	           .on('form:submit', function() {
-	             return false; 
-	             /*
-	             *
-	             *
-	             * Add form submit action here
-	             *
-	             */
-	           });
-	         });
+		/*
+		* 1-init validation using parsley
+		* 2-exclude disabled fields 
+		* 3-enable message container
+		* 4-submit form
+		*/
+		jQuery(function () {
+			jQuery('#msacBookingForm')
+			.parsley({
+				excluded: 'input[type=button], input[type=submit], input[type=reset], input[type=hidden], :disabled'
+			})
+			.on('field:validated', function() {
+				var ok = jQuery('.parsley-error').length === 0;
+				jQuery('.bs-callout-info').toggleClass('hidden', !ok);
+				jQuery('.bs-callout-warning').toggleClass('hidden', ok);
+			})
+			.on('form:submit', function() {
+				/*
+				*
+				*
+				* Add form submit action here
+				*
+				*/
+				return false; 
+			});
+		});
 
-	         function getToday(){
-	             var today = new Date();
-	             var dd = today.getDate();
-	             var mm = today.getMonth()+1; //January is 0!
-	             var yyyy = today.getFullYear();
-	             return today;
-	         }
-	         console.log(getToday());
-	   //       function addCustomValidator() {
-	   //       	console.log("validate");
-				// window.Parsley.addValidator('ifChecked', {
-				//    validateString : function(value, requirement) {
-				//       if (document.getElementById(requirement).checked){
-				//          return false;
-				//       } 
-				//       return true;
-				//    },
-				//    priority: 30
-				// });
-	   //       }
+		//the date of the submission needs to be submitted. This is a small function to create that in case it is tricky to get
+		function getToday(){
+		var today = new Date();
+		var dd = today.getDate();
+		var mm = today.getMonth()+1; //January is 0!
+		var yyyy = today.getFullYear();
+		return today;
+		}
+		console.log(getToday());
 	</script>
-	<title></title>
+	<title>MSAC Room Booker</title>
 </head>
 <body>
 	<div class="bs-callout bs-callout-warning hidden">
