@@ -8,11 +8,20 @@
 	<script src='http://collab.sites.olt.ubc.ca/wp-includes/js/jquery/jquery.js?ver=1.12.4' type='text/javascript'>	</script>
 	<script src='dist/form.min.js'></script>
 	<script>
+	var otherVC = false;
+
 		jQuery(document).ready(function() {
+			//show hide VC elements on check, disable required field for vc	
+			jQuery('input[name=vc-required]').on('click',function(){
+				toggleActive(".vc-required input");
+				if(jQuery(this).val()==="yes"){
+					jQuery(".vc-required, .vc-required input").prop('disabled',false).slideToggle('fast');
+				} else {
+					jQuery(".vc-required, .vc-required input").prop('disabled',true).slideToggle('fast');
+				}
+			});
 			//add time widget
 			jQuery('input[class="time"]').ptTimeSelect();
-			// hide elements that should be hidden
-			jQuery('.vc-same').hide();
 			//show hide VC elements on check, disable required field for vc	
 			jQuery('#TimeSame').click(function() {
 				//hide or show elements
@@ -36,7 +45,26 @@
 					});
 				}
 			});
+			//show other VC field
+			jQuery('.other-vc').on("click",function(){
+				otherVC = !otherVC
+				toggleActive('.other-vc-text',otherVC,true)
+				jQuery('.other-vc-text').prop('disabled',!otherVC).slideToggle('fast');
+			});
 		});
+		function toggleActive(target, status, hideParent) {
+			if (status === undefined) {
+				status = jQuery(target).prop('disabled');
+				console.log("should be set ",status);
+			}
+			if (hideParent !== undefined) {
+				jQuery(target).parent().slideToggle('fast');
+			}
+			jQuery(target).each(function(){
+				jQuery(this).prop('disabled', !status).slideToggle('fast');
+				console.log(target,status);
+			});
+		}
 
 		/*
 		* 1-init validation using parsley
@@ -67,13 +95,14 @@
 
 		//the date of the submission needs to be submitted. This is a small function to create that in case it is tricky to get
 		function getToday(){
-		var today = new Date();
-		var dd = today.getDate();
-		var mm = today.getMonth()+1; //January is 0!
-		var yyyy = today.getFullYear();
-		return today;
+			var t = new Date();
+			var dd = t.getDate();
+			var mm = t.getMonth()+1; //January is 0!
+			var yyyy = t.getFullYear();
+			return t;
 		}
-		console.log(getToday());
+		var today = getToday();
+		console.log(today);
 	</script>
 	<title>MSAC Room Booker</title>
 </head>
@@ -103,6 +132,11 @@
 				Student event organizer may need to be responsible for building and equipment security at the end of the event.
 			</div>
 		</fieldset>
+		<fieldset>
+			<legend>Is this a videoconference event?</legend>
+			<label><input type="radio" name="vc-required" value="yes"> Yes</label>
+			<label><input type="radio" name="vc-required" value="no" checked> No</label>
+		</fieldset>
 		<fieldset class="control-group">
 			<legend>Event Time</legend>
 			<label for="EventDate">Ideal Event Date <span class="required">*</span></label> 
@@ -114,11 +148,11 @@
 			<input class="time" id="room-start" name="room-start" data-parsley-required="true">
 			<label for="room-end">Room End Time <span class="required">*</span></label> 
 			<input class="time" id="room-end" name="room-end" data-parsley-required="true">
-			<div>
+			<div class="vc-required hide">
 				<label for="TimeSame">Videoconference time same as room time?</label> 
-				<input id="TimeSame" name="TimeSame" type="checkbox" checked><span id="TimeSameSpan">Yes</span>
+				<input id="TimeSame" name="TimeSame" type="checkbox" checked disabled="disabled"><span id="TimeSameSpan">Yes</span>
 			</div>
-			<div class="vc-same">
+			<div class="vc-same hide">
 				<label for="vc-start-hour">Videoconference Start Time <span class="required">*</span></label> 
 				<input class="time" id="vc-start-hour" name="vc-start-hour" data-parsley-required="true">
 				<label for="vc-end-hour">Videoconference End Time <span class="required">*</span></label> 
@@ -148,44 +182,47 @@
 					<input class="checkbox" data-parsley-class-handler="#room" data-parsley-mincheck="1" id="room5" name="room[]" data-parsley-required="true" type="checkbox" value="UBCMJ Meeting Room, B10 - VC Anywhere only (2-7 people)">UBCMJ Meeting Room, B10 - VC Anywhere only (2-7 people)
 				</label>
 				<label class="checkbox">
-					<input class="checkbox" data-parsley-class-handler="#room" data-parsley-mincheck="1" id="room6" name="room[]" data-parsley-required="true" type="checkbox" value="Music Room, B09 – VC Anywhere only (2-15 people)">Music Room, B09 – VC Anywhere only (2-15 people)</label>
-				<label class="checkbox">
-					<input class="checkbox" data-parsley-class-handler="#room" data-parsley-mincheck="1" id="room7" name="room[]" data-parsley-required="true" type="checkbox" value="Any room with VC that is available">Any room with VC that is available
+					<input class="checkbox" data-parsley-class-handler="#room" data-parsley-mincheck="1" id="room6" name="room[]" data-parsley-required="true" type="checkbox" value="Music Room, B09 – VC Anywhere only (2-15 people)">Music Room, B09 – VC Anywhere only (2-15 people)
+				</label>
+				<label class="checkbox vc-required hide">
+					<input class="checkbox" data-parsley-class-handler="#room" data-parsley-mincheck="1" id="room7" name="room[]" data-parsley-required="true" type="checkbox" value="Any room with VC that is available" disabled="disabled">Any room with VC that is available
 				</label>
 				<label class="checkbox">
 					<input class="checkbox" data-parsley-class-handler="#room" data-parsley-mincheck="1" id="room8" name="room[]" data-parsley-required="true" type="checkbox" value="Any room available, VC is not needed">Any room available, VC is not needed
 				</label>
 			</div>
 		</fieldset>
-		<fieldset class="control-group vc">
+		<fieldset class="control-group vc vc-required hide">
 			<legend>Videoconference To <span class="required">*</span></legend>
 			<div id="videoTo">
 				<label class="checkbox">
-					<input data-parsley-required="true" data-parsley-class-handler="#videoTo" name="VideoTo" type="checkbox" value="Victoria – MSAC IMP – RJH 246">Victoria – MSAC IMP – RJH 246
+					<input data-parsley-required="true" data-parsley-class-handler="#videoTo" name="VideoTo" type="checkbox" value="Victoria – MSAC IMP – RJH 246" disabled="disabled">Victoria – MSAC IMP – RJH 246
 				</label>
 				<label class="checkbox">
-					<input class="checkbox" data-parsley-required="true" data-parsley-class-handler="#videoTo" id="UVic" name="VideoTo" type="checkbox" value="Victoria – UVic Medical Sciences Building (1st & 2nd Years)"> Victoria – UVic Medical Sciences Building (1st & 2nd Years)
+					<input class="checkbox" data-parsley-required="true" data-parsley-class-handler="#videoTo" id="UVic" name="VideoTo" type="checkbox" value="Victoria – UVic Medical Sciences Building (1st & 2nd Years)" disabled="disabled"> Victoria – UVic Medical Sciences Building (1st & 2nd Years)
 				</label>
 				<label class="checkbox">
-					<input class="checkbox" data-parsley-required="true" data-parsley-class-handler="#videoTo" name="VideoTo" type="checkbox" value="Victoria – Victoria General Hospital">Victoria – Victoria General Hospital
+					<input class="checkbox" data-parsley-required="true" data-parsley-class-handler="#videoTo" name="VideoTo" type="checkbox" value="Victoria – Victoria General Hospital" disabled="disabled">Victoria – Victoria General Hospital
 				</label>
 				<label class="checkbox">
-					<input class="checkbox"  data-parsley-required="true" data-parsley-class-handler="#videoTo" name="VideoTo" type="checkbox" value="Prince George – UNBC Northern Health Sciences Centre (1st & 2nd Years)">Prince George – UNBC Northern Health Sciences Centre (1st & 2nd Years)
+					<input class="checkbox"  data-parsley-required="true" data-parsley-class-handler="#videoTo" name="VideoTo" type="checkbox" value="Prince George – UNBC Northern Health Sciences Centre (1st & 2nd Years)" disabled="disabled">Prince George – UNBC Northern Health Sciences Centre (1st & 2nd Years)
 				</label>
 				<label class="checkbox">
-					<input class="checkbox"  data-parsley-required="true" data-parsley-class-handler="#videoTo" name="VideoTo" type="checkbox" value="Prince George – UHNBC (hospital)">Prince George – UHNBC (hospital)</label>
+					<input class="checkbox"  data-parsley-required="true" data-parsley-class-handler="#videoTo" name="VideoTo" type="checkbox" value="Prince George – UHNBC (hospital)" disabled="disabled">Prince George – UHNBC (hospital)</label>
 				<label class="checkbox">
-					<input class="checkbox"  data-parsley-required="true" data-parsley-class-handler="#videoTo" name="VideoTo" type="checkbox" value="Kelowna – UBCO Health Sciences Centre (1st & 2nd Years)"> Kelowna – UBCO Health Sciences Centre (1st &amp; 2nd Years)
+					<input class="checkbox"  data-parsley-required="true" data-parsley-class-handler="#videoTo" name="VideoTo" type="checkbox" value="Kelowna – UBCO Health Sciences Centre (1st & 2nd Years)" disabled="disabled"> Kelowna – UBCO Health Sciences Centre (1st &amp; 2nd Years)
 				</label>
 				<label class="checkbox">
-					<input class="checkbox"  data-parsley-required="true" data-parsley-class-handler="#videoTo" name="VideoTo" type="checkbox" value="Kelowna – Kelowna General Hospital">Kelowna – Kelowna General Hospital
+					<input class="checkbox"  data-parsley-required="true" data-parsley-class-handler="#videoTo" name="VideoTo" type="checkbox" value="Kelowna – Kelowna General Hospital" disabled="disabled">Kelowna – Kelowna General Hospital
 				</label>
 				<label class="checkbox">
-					<input class="checkbox other-vc"  data-parsley-required="true" data-parsley-class-handler="#videoTo" name="VideoTo" type="checkbox" value="Other: Click here to enter other VC location.">Other: Click here to enter other VC location.</label> VC Anywhere*
-				<label>Other VC Location</label>
-				<input class="other-vc-input" data-parsley-class-handler="#videoTo"></input>
+					<input class="checkbox other-vc"  data-parsley-required="true" data-parsley-class-handler="#videoTo" name="VideoTo" type="checkbox" value="Other: Click here to enter other VC location." disabled="disabled">Other: Click here to enter other VC location.
+				</label>
+				<input class="other-vc-text hide" name="other-vc-text" data-parsley-required="true" data-parsley-class-handler="#videoTo" disabled="disabled"></input>
+				 <div>VC Anywhere*</div>
+				<label>Please specify other VC Location</label>
 				<label class="checkbox">
-					<input class="checkbox"  data-parsley-required="true" name="VideoTo" type="checkbox" value="Participants can connect to your event via their computers, laptops, iPhones or android phones."> Participants can connect to your event via their computers, laptops, iPhones or android phones.
+					<input class="checkbox"  data-parsley-required="true" name="VideoTo" type="checkbox" value="Participants can connect to your event via their computers, laptops, iPhones or android phones." disabled="disabled"> Participants can connect to your event via their computers, laptops, iPhones or android phones.
 				</label>
 				<div>
 					*Organizer must appoint moderator to attend at MSAC with laptop to monitor VC Anywhere participation.
