@@ -251,6 +251,7 @@
         } else {
             jQuery('#ptTimeSelectUserSelHr').empty().append(h);
         }
+        updateTime();
     };// END setHr() function
         
     /**
@@ -264,6 +265,7 @@
      */
     jQuery.ptTimeSelect.setMin = function(m) {
         jQuery('#ptTimeSelectUserSelMin').empty().append(m);
+        updateTime();
     };// END setMin() function
         
     /**
@@ -283,7 +285,15 @@
         this.closeCntr();
         
     };// END setTime() function
-        
+    function updateTime() {
+        var tSel = jQuery('#ptTimeSelectUserSelHr').text()
+                    + ":"
+                    + jQuery('#ptTimeSelectUserSelMin').text()
+                    + " "
+                    + jQuery('#ptTimeSelectUserSelAmPm').text();
+        jQuery(".isPtTimeSelectActive").val(tSel);  
+        jQuery(".isPtTimeSelectActive").parsley().validate();      
+    }; 
     /**
      * Displays the time definition area on the page, right below
      * the input field.  Also sets the custom colors/css on the

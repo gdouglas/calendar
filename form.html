@@ -13,12 +13,8 @@
 		jQuery(document).ready(function() {
 			//show hide VC elements on check, disable required field for vc	
 			jQuery('input[name=vc-required]').on('click',function(){
-				toggleActive(".vc-required input");
-				if(jQuery(this).val()==="yes"){
-					jQuery(".vc-required, .vc-required input").prop('disabled',false).slideToggle('fast');
-				} else {
-					jQuery(".vc-required, .vc-required input").prop('disabled',true).slideToggle('fast');
-				}
+				toggleActive(".vc-required input",undefined,true);
+				jQuery('#videoTo').slideToggle('fast');
 			});
 			//add time widget
 			jQuery('input[class="time"]').ptTimeSelect();
@@ -26,27 +22,11 @@
 			jQuery('#TimeSame').click(function() {
 				//hide or show elements
 				jQuery('.vc, .vc-same').slideToggle("fast");
-				if (this.checked) {
-					//show VC elements
-					jQuery('.vc input').each(function(){
-						//enable vc elements
-						jQuery(this).prop('disabled', false);
-					});
-					jQuery('vc-same input').each(function(){
-						jQuery(this).prop('disabled', true);
-					});
-				} else {
-					jQuery('.vc input').each(function(){
-						//disable the inputs
-						jQuery(this).prop('disabled', true);
-					});
-					jQuery('vc-same input').each(function(){
-						jQuery(this).prop('disabled', false);
-					});
-				}
+				toggleActive(".vc-same input");
 			});
 			//show other VC field
-			jQuery('.other-vc').on("click",function(){
+			jQuery('.other-vc').on("click",function(e){
+				console.log("other-vc ",e);
 				otherVC = !otherVC
 				toggleActive('.other-vc-text',otherVC,true)
 				jQuery('.other-vc-text').prop('disabled',!otherVC).slideToggle('fast');
@@ -59,10 +39,12 @@
 			}
 			if (hideParent !== undefined) {
 				jQuery(target).parent().slideToggle('fast');
+				console.log("show parent",jQuery(target).parent());
 			}
+			console.log("hide and disable",target);
 			jQuery(target).each(function(){
-				jQuery(this).prop('disabled', !status).slideToggle('fast');
-				console.log(target,status);
+				jQuery(this).prop('disabled', !status);
+				console.log(target,!status);
 			});
 		}
 
@@ -150,13 +132,13 @@
 			<input class="time" id="room-end" name="room-end" data-parsley-required="true">
 			<div class="vc-required hide">
 				<label for="TimeSame">Videoconference time same as room time?</label> 
-				<input id="TimeSame" name="TimeSame" type="checkbox" checked disabled="disabled"><span id="TimeSameSpan">Yes</span>
+				<input id="TimeSame" name="TimeSame" type="checkbox" checked disabled><span id="TimeSameSpan">Yes</span>
 			</div>
 			<div class="vc-same hide">
 				<label for="vc-start-hour">Videoconference Start Time <span class="required">*</span></label> 
-				<input class="time" id="vc-start-hour" name="vc-start-hour" data-parsley-required="true">
+				<input class="time" id="vc-start-hour" name="vc-start-hour" data-parsley-required="true" disabled>
 				<label for="vc-end-hour">Videoconference End Time <span class="required">*</span></label> 
-				<input class="time" id="vc-end-hour" name="vc-end-hour" data-parsley-required="true">
+				<input class="time" id="vc-end-hour" name="vc-end-hour" data-parsley-required="true" disabled>
 			</div>
 		</fieldset>
 		<fieldset class="control-group">
@@ -192,37 +174,39 @@
 				</label>
 			</div>
 		</fieldset>
-		<fieldset class="control-group vc vc-required hide">
-			<legend>Videoconference To <span class="required">*</span></legend>
-			<div id="videoTo">
-				<label class="checkbox">
+		<fieldset class="control-group vc-required">
+			<div id="videoTo" class="hide">
+				<legend>Videoconference To <span class="required">*</span></legend>
+				<label class="checkbox hide">
 					<input data-parsley-required="true" data-parsley-class-handler="#videoTo" name="VideoTo" type="checkbox" value="Victoria – MSAC IMP – RJH 246" disabled="disabled">Victoria – MSAC IMP – RJH 246
 				</label>
-				<label class="checkbox">
+				<label class="checkbox hide">
 					<input class="checkbox" data-parsley-required="true" data-parsley-class-handler="#videoTo" id="UVic" name="VideoTo" type="checkbox" value="Victoria – UVic Medical Sciences Building (1st & 2nd Years)" disabled="disabled"> Victoria – UVic Medical Sciences Building (1st & 2nd Years)
 				</label>
-				<label class="checkbox">
+				<label class="checkbox hide">
 					<input class="checkbox" data-parsley-required="true" data-parsley-class-handler="#videoTo" name="VideoTo" type="checkbox" value="Victoria – Victoria General Hospital" disabled="disabled">Victoria – Victoria General Hospital
 				</label>
-				<label class="checkbox">
+				<label class="checkbox hide">
 					<input class="checkbox"  data-parsley-required="true" data-parsley-class-handler="#videoTo" name="VideoTo" type="checkbox" value="Prince George – UNBC Northern Health Sciences Centre (1st & 2nd Years)" disabled="disabled">Prince George – UNBC Northern Health Sciences Centre (1st & 2nd Years)
 				</label>
-				<label class="checkbox">
+				<label class="checkbox hide">
 					<input class="checkbox"  data-parsley-required="true" data-parsley-class-handler="#videoTo" name="VideoTo" type="checkbox" value="Prince George – UHNBC (hospital)" disabled="disabled">Prince George – UHNBC (hospital)</label>
-				<label class="checkbox">
+				<label class="checkbox hide">
 					<input class="checkbox"  data-parsley-required="true" data-parsley-class-handler="#videoTo" name="VideoTo" type="checkbox" value="Kelowna – UBCO Health Sciences Centre (1st & 2nd Years)" disabled="disabled"> Kelowna – UBCO Health Sciences Centre (1st &amp; 2nd Years)
 				</label>
-				<label class="checkbox">
+				<label class="checkbox hide">
 					<input class="checkbox"  data-parsley-required="true" data-parsley-class-handler="#videoTo" name="VideoTo" type="checkbox" value="Kelowna – Kelowna General Hospital" disabled="disabled">Kelowna – Kelowna General Hospital
 				</label>
-				<label class="checkbox">
+				<label class="checkbox hide">
 					<input class="checkbox other-vc"  data-parsley-required="true" data-parsley-class-handler="#videoTo" name="VideoTo" type="checkbox" value="Other: Click here to enter other VC location." disabled="disabled">Other: Click here to enter other VC location.
 				</label>
-				<input class="other-vc-text hide" name="other-vc-text" data-parsley-required="true" data-parsley-class-handler="#videoTo" disabled="disabled"></input>
+				<div>
+					<input class="other-vc-text hide" name="other-vc-text" data-parsley-required="true" data-parsley-class-handler="#videoTo" disabled="disabled">
+				</div>
 				 <div>VC Anywhere*</div>
 				<label>Please specify other VC Location</label>
-				<label class="checkbox">
-					<input class="checkbox"  data-parsley-required="true" name="VideoTo" type="checkbox" value="Participants can connect to your event via their computers, laptops, iPhones or android phones." disabled="disabled"> Participants can connect to your event via their computers, laptops, iPhones or android phones.
+				<label class="checkbox hide">
+					<input class="checkbox hide"  data-parsley-required="true" name="VideoTo" type="checkbox" value="Participants can connect to your event via their computers, laptops, iPhones or android phones." disabled="disabled"> Participants can connect to your event via their computers, laptops, iPhones or android phones.
 				</label>
 				<div>
 					*Organizer must appoint moderator to attend at MSAC with laptop to monitor VC Anywhere participation.
