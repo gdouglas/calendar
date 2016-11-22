@@ -9,16 +9,16 @@
 	<script src='dist/form.min.js'></script>
 	<script>
 	var otherVC = false;
-
 		jQuery(document).ready(function() {
-			//show hide VC elements on check, disable required field for vc	
+			//show hide VC elements on check, disable required field for vc
 			jQuery('input[name=vc-required]').on('click',function(){
 				toggleActive(".vc-required input",undefined,true);
 				jQuery('#videoTo').slideToggle('fast');
+				jQuery('.other-vc-text').prop('disabled',true);
 			});
 			//add time widget
 			jQuery('input[class="time"]').ptTimeSelect();
-			//show hide VC elements on check, disable required field for vc	
+			//show hide VC elements on check, disable required field for vc
 			jQuery('#TimeSame').click(function() {
 				//hide or show elements
 				jQuery('.vc, .vc-same').slideToggle("fast");
@@ -26,31 +26,26 @@
 			});
 			//show other VC field
 			jQuery('.other-vc').on("click",function(e){
-				console.log("other-vc ",e);
 				otherVC = !otherVC
-				toggleActive('.other-vc-text',otherVC,true)
-				jQuery('.other-vc-text').prop('disabled',!otherVC).slideToggle('fast');
+				toggleActive('.other-vc-text',undefined,true)
 			});
 		});
+		//toggle visibility and disabled on all jQuery matches
 		function toggleActive(target, status, hideParent) {
 			if (status === undefined) {
 				status = jQuery(target).prop('disabled');
-				console.log("should be set ",status);
 			}
 			if (hideParent !== undefined) {
 				jQuery(target).parent().slideToggle('fast');
-				console.log("show parent",jQuery(target).parent());
 			}
-			console.log("hide and disable",target);
 			jQuery(target).each(function(){
 				jQuery(this).prop('disabled', !status);
-				console.log(target,!status);
 			});
 		}
 
 		/*
 		* 1-init validation using parsley
-		* 2-exclude disabled fields 
+		* 2-exclude disabled fields
 		* 3-enable message container
 		* 4-submit form
 		*/
@@ -71,7 +66,7 @@
 				* Add form submit action here
 				*
 				*/
-				return false; 
+				return false;
 			});
 		});
 
@@ -99,16 +94,16 @@
 	</div>
 	<form data-parsley-validate="" id="msacBookingForm" name="msacBookingForm">
 		<fieldset class="control-group">
-			<label for="MusClub">MUS Club <span class="required">*</span></label> 
+			<label for="MusClub">MUS Club <span class="required">*</span></label>
 			<input class="form-control" id="MusClub" name="MusClub" placeholder="Club" data-parsley-required="true" type="text">
-			<label for="EventTitle">Title of Event <span class="required">*</span></label> 
+			<label for="EventTitle">Title of Event <span class="required">*</span></label>
 			<input class="form-control" id="EventTitle" name="EventTitle" placeholder="Event Title" data-parsley-required="true" type="text">
 		</fieldset>
 		<fieldset class="control-group">
-			<label for="StudentEventOrganizerFirst">Student Event Organizer Name <span class="required">*</span></label> 
-			<input id="StudentEventOrganizerFirst" name="StudentEventOrganizerFirst" placeholder="First" data-parsley-required="true" type="text"> 
+			<label for="StudentEventOrganizerFirst">Student Event Organizer Name <span class="required">*</span></label>
+			<input id="StudentEventOrganizerFirst" name="StudentEventOrganizerFirst" placeholder="First" data-parsley-required="true" type="text">
 			<input id="StudentEventOrganizerLast" name="StudentEventOrganizerLast" placeholder="Last" data-parsley-required="true" type="text">
-			<label for="OrganizerEmail">Student Organizer Email <span class="required">*</span></label> 
+			<label for="OrganizerEmail">Student Organizer Email <span class="required">*</span></label>
 			<input data-parsley-trigger="change" id="OrganizerEmail" name="OrganizerEmail" data-parsley-required="true" type="email">
 			<div class="help-block">
 				Student event organizer may need to be responsible for building and equipment security at the end of the event.
@@ -121,28 +116,28 @@
 		</fieldset>
 		<fieldset class="control-group">
 			<legend>Event Time</legend>
-			<label for="EventDate">Ideal Event Date <span class="required">*</span></label> 
+			<label for="EventDate">Ideal Event Date <span class="required">*</span></label>
 			<input id="EventDate" name="EventDate" data-parsley-required="true" type="date">
 		</fieldset>
 		<fieldset class="control-group">
 			<legend>Ideal Event times <span class="required">*</span></legend>
-			<label for="room-start">Room Start Time <span class="required">*</span></label> 
+			<label for="room-start">Room Start Time <span class="required">*</span></label>
 			<input class="time" id="room-start" name="room-start" data-parsley-required="true">
-			<label for="room-end">Room End Time <span class="required">*</span></label> 
+			<label for="room-end">Room End Time <span class="required">*</span></label>
 			<input class="time" id="room-end" name="room-end" data-parsley-required="true">
 			<div class="vc-required hide">
-				<label for="TimeSame">Videoconference time same as room time?</label> 
+				<label for="TimeSame">Videoconference time same as room time?</label>
 				<input id="TimeSame" name="TimeSame" type="checkbox" checked disabled><span id="TimeSameSpan">Yes</span>
 			</div>
 			<div class="vc-same hide">
-				<label for="vc-start-hour">Videoconference Start Time <span class="required">*</span></label> 
+				<label for="vc-start-hour">Videoconference Start Time <span class="required">*</span></label>
 				<input class="time" id="vc-start-hour" name="vc-start-hour" data-parsley-required="true" disabled>
-				<label for="vc-end-hour">Videoconference End Time <span class="required">*</span></label> 
+				<label for="vc-end-hour">Videoconference End Time <span class="required">*</span></label>
 				<input class="time" id="vc-end-hour" name="vc-end-hour" data-parsley-required="true" disabled>
 			</div>
 		</fieldset>
 		<fieldset class="control-group">
-			<label for="NumberAttendees">Number of Attendees Expected <span class="required">*</span></label> 
+			<label for="NumberAttendees">Number of Attendees Expected <span class="required">*</span></label>
 			<input data-parsley-required-message="Must be a number" id="NumberAttendees" data-parsley-required="true" type="number">
 		</fieldset>
 		<fieldset class="control-group">
@@ -201,12 +196,12 @@
 					<input class="checkbox other-vc"  data-parsley-required="true" data-parsley-class-handler="#videoTo" name="VideoTo" type="checkbox" value="Other: Click here to enter other VC location." disabled="disabled">Other: Click here to enter other VC location.
 				</label>
 				<div>
-					<input class="other-vc-text hide" name="other-vc-text" data-parsley-required="true" data-parsley-class-handler="#videoTo" disabled="disabled">
+					<label>Please specify other VC Location</label>
+					<input class="other-vc-text" name="other-vc-text" data-parsley-required="true" data-parsley-class-handler="#videoTo" disabled>
 				</div>
 				 <div>VC Anywhere*</div>
-				<label>Please specify other VC Location</label>
 				<label class="checkbox hide">
-					<input class="checkbox hide"  data-parsley-required="true" name="VideoTo" type="checkbox" value="Participants can connect to your event via their computers, laptops, iPhones or android phones." disabled="disabled"> Participants can connect to your event via their computers, laptops, iPhones or android phones.
+					<input class="checkbox"  data-parsley-required="true" name="VideoTo" type="checkbox" value="Participants can connect to your event via their computers, laptops, iPhones or android phones." disabled="disabled"> Participants can connect to your event via their computers, laptops, iPhones or android phones.
 				</label>
 				<div>
 					*Organizer must appoint moderator to attend at MSAC with laptop to monitor VC Anywhere participation.
