@@ -5,11 +5,13 @@
 	<link href="//cdn.ubc.ca/clf/7.0.4/css/ubc-clf-full.min.css" rel="stylesheet">
 	<link href="dist/cal.min.css" rel="stylesheet">
 	<link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.22/themes/redmond/jquery-ui.css" rel="stylesheet" type="text/css">
-	<script src='http://collab.sites.olt.ubc.ca/wp-includes/js/jquery/jquery.js?ver=1.12.4' type='text/javascript'>	</script>
+	<script src='http://collab.sites.olt.ubc.ca/wp-includes/js/jquery/jquery.js?ver=1.12.4' type='text/javascript'></script>
 	<script src='dist/form.min.js'></script>
 	<script>
 	var otherVC = false;
 		jQuery(document).ready(function() {
+			//set hidden field to today
+			jQuery('#submissionDate').val(today);
 			//show hide VC elements on check, disable required field for vc
 			jQuery('input[name=vc-required]').on('click',function(){
 				toggleActive(".vc-required input",undefined,true);
@@ -59,13 +61,11 @@
 				jQuery('.bs-callout-info').toggleClass('hidden', !ok);
 				jQuery('.bs-callout-warning').toggleClass('hidden', ok);
 			})
-			.on('form:submit', function() {
-				/*
-				*
-				*
-				* Add form submit action here
-				*
-				*/
+			.on('form:submit', function(e) {
+				return false;
+			})
+			.on('form:success',function(e){
+				console.log("success, submit to https://forms.mednet.med.ubc.ca/sites/alumni/_api/Web/lists/GetByTitle('MSACBookingForm')");
 				return false;
 			});
 		});
@@ -79,7 +79,6 @@
 			return t;
 		}
 		var today = getToday();
-		console.log(today);
 	</script>
 	<title>MSAC Room Booker</title>
 </head>
@@ -95,16 +94,17 @@
 	<form data-parsley-validate="" id="msacBookingForm" name="msacBookingForm">
 		<fieldset class="control-group">
 			<label for="MusClub">MUS Club <span class="required">*</span></label>
-			<input class="form-control" id="MusClub" name="MusClub" placeholder="Club" data-parsley-required="true" type="text">
+			<input class="form-control" id="MusClub" name="MUS_x0020_Club" placeholder="Club" data-parsley-required="true" type="text">
 			<label for="EventTitle">Title of Event <span class="required">*</span></label>
-			<input class="form-control" id="EventTitle" name="EventTitle" placeholder="Event Title" data-parsley-required="true" type="text">
+			<input class="form-control" id="EventTitle" name="TitleOfEvent" placeholder="Event Title" data-parsley-required="true" type="text">
 		</fieldset>
 		<fieldset class="control-group">
+			<!-- Check StudentEventOrganizer field. First and last name are separate, might be problematic-->
 			<label for="StudentEventOrganizerFirst">Student Event Organizer Name <span class="required">*</span></label>
-			<input id="StudentEventOrganizerFirst" name="StudentEventOrganizerFirst" placeholder="First" data-parsley-required="true" type="text">
-			<input id="StudentEventOrganizerLast" name="StudentEventOrganizerLast" placeholder="Last" data-parsley-required="true" type="text">
+			<input id="StudentEventOrganizerFirst" name="StudentEventOrganizer" placeholder="First" data-parsley-required="true" type="text">
+			<input id="StudentEventOrganizerLast" name="StudentEventOrganizer" placeholder="Last" data-parsley-required="true" type="text">
 			<label for="OrganizerEmail">Student Organizer Email <span class="required">*</span></label>
-			<input data-parsley-trigger="change" id="OrganizerEmail" name="OrganizerEmail" data-parsley-required="true" type="email">
+			<input data-parsley-trigger="change" id="OrganizerEmail" name="StudentOrganizerEmail" data-parsley-required="true" type="email">
 			<div class="help-block">
 				Student event organizer may need to be responsible for building and equipment security at the end of the event.
 			</div>
@@ -122,50 +122,51 @@
 		<fieldset class="control-group">
 			<legend>Ideal Event times <span class="required">*</span></legend>
 			<label for="room-start">Room Start Time <span class="required">*</span></label>
-			<input class="time" id="room-start" name="room-start" data-parsley-required="true">
+			<input class="time" id="room-start" name="StartTime" data-parsley-required="true">
 			<label for="room-end">Room End Time <span class="required">*</span></label>
-			<input class="time" id="room-end" name="room-end" data-parsley-required="true">
+			<input class="time" id="room-end" name="EndTime" data-parsley-required="true">
 			<div class="vc-required hide">
 				<label for="TimeSame">Videoconference time same as room time?</label>
 				<input id="TimeSame" name="TimeSame" type="checkbox" checked disabled><span id="TimeSameSpan">Yes</span>
 			</div>
+			<!-- Need to add vc start and end to mednet -->
 			<div class="vc-same hide">
 				<label for="vc-start-hour">Videoconference Start Time <span class="required">*</span></label>
-				<input class="time" id="vc-start-hour" name="vc-start-hour" data-parsley-required="true" disabled>
+				<input class="time" id="vc-start-hour" name="vcStart" data-parsley-required="true" disabled>
 				<label for="vc-end-hour">Videoconference End Time <span class="required">*</span></label>
-				<input class="time" id="vc-end-hour" name="vc-end-hour" data-parsley-required="true" disabled>
+				<input class="time" id="vc-end-hour" name="vcEnd" data-parsley-required="true" disabled>
 			</div>
 		</fieldset>
 		<fieldset class="control-group">
 			<label for="NumberAttendees">Number of Attendees Expected <span class="required">*</span></label>
-			<input data-parsley-required-message="Must be a number" id="NumberAttendees" data-parsley-required="true" type="number">
+			<input data-parsley-required-message="Must be a number" id="NumberOfAttendees" name="NumberOfAttendees" data-parsley-required="true" type="number">
 		</fieldset>
 		<fieldset class="control-group">
 			<legend>Ideal Room for Event <span class="required">*</span></legend>
 			<div id="room">
 				<label class="checkbox">
-					<input class="checkbox" data-parsley-class-handler="#room" data-parsley-mincheck="1" id="room1" name="room[]" data-parsley-required="true" type="checkbox" value="MSAC VC Room, B08 – VC (10-60 people)">MSAC VC Room, B08 – VC (10-60 people)
+					<input class="checkbox" data-parsley-class-handler="#room" data-parsley-mincheck="1" id="room1" name="IdealRoomForEvent" data-parsley-required="true" type="checkbox" value="MSAC VC Room, B08 – VC (10-60 people)">MSAC VC Room, B08 – VC (10-60 people)
 				</label>
 				<label class="checkbox">
-					<input class="checkbox" data-parsley-class-handler="#room" data-parsley-mincheck="1" id="room2" name="room[]" data-parsley-required="true" type="checkbox" value="Latham Hall, 110 – VC (10-40 people)">Latham Hall, 110 – VC (10-40 people)
+					<input class="checkbox" data-parsley-class-handler="#room" data-parsley-mincheck="1" id="room2" name="IdealRoomForEvent" data-parsley-required="true" type="checkbox" value="Latham Hall, 110 – VC (10-40 people)">Latham Hall, 110 – VC (10-40 people)
 				</label>
 				<label class="checkbox">
-					<input class="checkbox" data-parsley-class-handler="#room" data-parsley-mincheck="1" id="room3" name="room[]" data-parsley-required="true" type="checkbox" value="Hardwick Hall, 104 – VC (20-80 people)">Hardwick Hall, 104 – VC (20-80 people)
+					<input class="checkbox" data-parsley-class-handler="#room" data-parsley-mincheck="1" id="room3" name="IdealRoomForEvent" data-parsley-required="true" type="checkbox" value="Hardwick Hall, 104 – VC (20-80 people)">Hardwick Hall, 104 – VC (20-80 people)
 				</label>
 				<label class="checkbox">
-					<input class="checkbox" data-parsley-class-handler="#room" data-parsley-mincheck="1" id="room4" name="room[]" data-parsley-required="true" type="checkbox" value="Alumni Room, 103 – VC (2-15 table/15-30 rows)">Alumni Room, 103 – VC (2-15 table/15-30 rows)
+					<input class="checkbox" data-parsley-class-handler="#room" data-parsley-mincheck="1" id="room4" name="IdealRoomForEvent" data-parsley-required="true" type="checkbox" value="Alumni Room, 103 – VC (2-15 table/15-30 rows)">Alumni Room, 103 – VC (2-15 table/15-30 rows)
 				</label>
 				<label class="checkbox">
-					<input class="checkbox" data-parsley-class-handler="#room" data-parsley-mincheck="1" id="room5" name="room[]" data-parsley-required="true" type="checkbox" value="UBCMJ Meeting Room, B10 - VC Anywhere only (2-7 people)">UBCMJ Meeting Room, B10 - VC Anywhere only (2-7 people)
+					<input class="checkbox" data-parsley-class-handler="#room" data-parsley-mincheck="1" id="room5" name="IdealRoomForEvent" data-parsley-required="true" type="checkbox" value="UBCMJ Meeting Room, B10 - VC Anywhere only (2-7 people)">UBCMJ Meeting Room, B10 - VC Anywhere only (2-7 people)
 				</label>
 				<label class="checkbox">
-					<input class="checkbox" data-parsley-class-handler="#room" data-parsley-mincheck="1" id="room6" name="room[]" data-parsley-required="true" type="checkbox" value="Music Room, B09 – VC Anywhere only (2-15 people)">Music Room, B09 – VC Anywhere only (2-15 people)
+					<input class="checkbox" data-parsley-class-handler="#room" data-parsley-mincheck="1" id="room6" name="IdealRoomForEvent" data-parsley-required="true" type="checkbox" value="Music Room, B09 – VC Anywhere only (2-15 people)">Music Room, B09 – VC Anywhere only (2-15 people)
 				</label>
 				<label class="checkbox vc-required hide">
-					<input class="checkbox" data-parsley-class-handler="#room" data-parsley-mincheck="1" id="room7" name="room[]" data-parsley-required="true" type="checkbox" value="Any room with VC that is available" disabled="disabled">Any room with VC that is available
+					<input class="checkbox" data-parsley-class-handler="#room" data-parsley-mincheck="1" id="room7" name="IdealRoomForEvent" data-parsley-required="true" type="checkbox" value="Any room with VC that is available" disabled="disabled">Any room with VC that is available
 				</label>
 				<label class="checkbox">
-					<input class="checkbox" data-parsley-class-handler="#room" data-parsley-mincheck="1" id="room8" name="room[]" data-parsley-required="true" type="checkbox" value="Any room available, VC is not needed">Any room available, VC is not needed
+					<input class="checkbox" data-parsley-class-handler="#room" data-parsley-mincheck="1" id="room8" name="IdealRoomForEvent" data-parsley-required="true" type="checkbox" value="Any room available, VC is not needed">Any room available, VC is not needed
 				</label>
 			</div>
 		</fieldset>
@@ -173,27 +174,27 @@
 			<div id="videoTo" class="hide">
 				<legend>Videoconference To <span class="required">*</span></legend>
 				<label class="checkbox hide">
-					<input data-parsley-required="true" data-parsley-class-handler="#videoTo" name="VideoTo" type="checkbox" value="Victoria – MSAC IMP – RJH 246" disabled="disabled">Victoria – MSAC IMP – RJH 246
+					<input data-parsley-required="true" data-parsley-class-handler="#videoTo" name="VideoConferenceTo" type="checkbox" value="Victoria – MSAC IMP – RJH 246" disabled="disabled">Victoria – MSAC IMP – RJH 246
 				</label>
 				<label class="checkbox hide">
-					<input class="checkbox" data-parsley-required="true" data-parsley-class-handler="#videoTo" id="UVic" name="VideoTo" type="checkbox" value="Victoria – UVic Medical Sciences Building (1st & 2nd Years)" disabled="disabled"> Victoria – UVic Medical Sciences Building (1st & 2nd Years)
+					<input class="checkbox" data-parsley-required="true" data-parsley-class-handler="#videoTo" id="UVic" name="VideoConferenceTo" type="checkbox" value="Victoria – UVic Medical Sciences Building (1st & 2nd Years)" disabled="disabled"> Victoria – UVic Medical Sciences Building (1st & 2nd Years)
 				</label>
 				<label class="checkbox hide">
-					<input class="checkbox" data-parsley-required="true" data-parsley-class-handler="#videoTo" name="VideoTo" type="checkbox" value="Victoria – Victoria General Hospital" disabled="disabled">Victoria – Victoria General Hospital
+					<input class="checkbox" data-parsley-required="true" data-parsley-class-handler="#videoTo" name="VideoConferenceTo" type="checkbox" value="Victoria – Victoria General Hospital" disabled="disabled">Victoria – Victoria General Hospital
 				</label>
 				<label class="checkbox hide">
-					<input class="checkbox"  data-parsley-required="true" data-parsley-class-handler="#videoTo" name="VideoTo" type="checkbox" value="Prince George – UNBC Northern Health Sciences Centre (1st & 2nd Years)" disabled="disabled">Prince George – UNBC Northern Health Sciences Centre (1st & 2nd Years)
+					<input class="checkbox"  data-parsley-required="true" data-parsley-class-handler="#videoTo" name="VideoConferenceTo" type="checkbox" value="Prince George – UNBC Northern Health Sciences Centre (1st & 2nd Years)" disabled="disabled">Prince George – UNBC Northern Health Sciences Centre (1st & 2nd Years)
 				</label>
 				<label class="checkbox hide">
-					<input class="checkbox"  data-parsley-required="true" data-parsley-class-handler="#videoTo" name="VideoTo" type="checkbox" value="Prince George – UHNBC (hospital)" disabled="disabled">Prince George – UHNBC (hospital)</label>
+					<input class="checkbox"  data-parsley-required="true" data-parsley-class-handler="#videoTo" name="VideoConferenceTo" type="checkbox" value="Prince George – UHNBC (hospital)" disabled="disabled">Prince George – UHNBC (hospital)</label>
 				<label class="checkbox hide">
-					<input class="checkbox"  data-parsley-required="true" data-parsley-class-handler="#videoTo" name="VideoTo" type="checkbox" value="Kelowna – UBCO Health Sciences Centre (1st & 2nd Years)" disabled="disabled"> Kelowna – UBCO Health Sciences Centre (1st &amp; 2nd Years)
+					<input class="checkbox"  data-parsley-required="true" data-parsley-class-handler="#videoTo" name="VideoConferenceTo" type="checkbox" value="Kelowna – UBCO Health Sciences Centre (1st & 2nd Years)" disabled="disabled"> Kelowna – UBCO Health Sciences Centre (1st &amp; 2nd Years)
 				</label>
 				<label class="checkbox hide">
-					<input class="checkbox"  data-parsley-required="true" data-parsley-class-handler="#videoTo" name="VideoTo" type="checkbox" value="Kelowna – Kelowna General Hospital" disabled="disabled">Kelowna – Kelowna General Hospital
+					<input class="checkbox"  data-parsley-required="true" data-parsley-class-handler="#videoTo" name="VideoConferenceTo" type="checkbox" value="Kelowna – Kelowna General Hospital" disabled="disabled">Kelowna – Kelowna General Hospital
 				</label>
 				<label class="checkbox hide">
-					<input class="checkbox other-vc"  data-parsley-required="true" data-parsley-class-handler="#videoTo" name="VideoTo" type="checkbox" value="Other: Click here to enter other VC location." disabled="disabled">Other: Click here to enter other VC location.
+					<input class="checkbox other-vc"  data-parsley-required="true" data-parsley-class-handler="#videoTo" name="VideoConferenceTo" type="checkbox" value="Other: Click here to enter other VC location." disabled="disabled">Other: Click here to enter other VC location.
 				</label>
 				<div>
 					<label>Please specify other VC Location</label>
@@ -201,7 +202,7 @@
 				</div>
 				 <div>VC Anywhere*</div>
 				<label class="checkbox hide">
-					<input class="checkbox"  data-parsley-required="true" name="VideoTo" type="checkbox" value="Participants can connect to your event via their computers, laptops, iPhones or android phones." disabled="disabled"> Participants can connect to your event via their computers, laptops, iPhones or android phones.
+					<input class="checkbox"  data-parsley-required="true" name="VideoConferenceTo" type="checkbox" value="Participants can connect to your event via their computers, laptops, iPhones or android phones." disabled="disabled"> Participants can connect to your event via their computers, laptops, iPhones or android phones.
 				</label>
 				<div>
 					*Organizer must appoint moderator to attend at MSAC with laptop to monitor VC Anywhere participation.
@@ -216,33 +217,38 @@
 					<li>Microphone - for distributed sites</li>
 					<li>Laptop for presentation on screen</li>
 				</ul><label class="checkbox">
-				<input data-parsley-class-handler="#equipment" data-parsley-errors-container="#equipment" name="equipment" data-parsley-required="true" type="checkbox" value="Sound system">Sound system</label>
+				<input data-parsley-class-handler="#equipment" data-parsley-errors-container="#equipment" name="EquipmentNeeds" data-parsley-required="true" type="checkbox" value="Sound system">Sound system</label>
 				<label class="checkbox">
-				<input data-parsley-class-handler="#equipment" name="equipment" data-parsley-required="true" type="checkbox" value="Movie will be shown">Movie will be shown</label>
+				<input data-parsley-class-handler="#equipment" name="EquipmentNeeds" data-parsley-required="true" type="checkbox" value="Movie will be shown">Movie will be shown</label>
 				<label class="checkbox">
-				<input data-parsley-class-handler="#equipment" name="equipment" data-parsley-required="true" type="checkbox" value="Laptop – MSAC has 4 to lend">Laptop – MSAC has 4 to lend</label>
+				<input data-parsley-class-handler="#equipment" name="EquipmentNeeds" data-parsley-required="true" type="checkbox" value="Laptop – MSAC has 4 to lend">Laptop – MSAC has 4 to lend</label>
 				<label class="checkbox">
-				<input data-parsley-class-handler="#equipment" name="equipment" data-parsley-required="true" type="checkbox" value="Plasma Screen">Plasma Screen</label>
+				<input data-parsley-class-handler="#equipment" name="EquipmentNeeds" data-parsley-required="true" type="checkbox" value="Plasma Screen">Plasma Screen</label>
 				<label class="checkbox">
-				<input data-parsley-class-handler="#equipment" name="equipment" data-parsley-required="true" type="checkbox" value="Wired internet (MSAC has WiFi)">Wired internet (MSAC has WiFi)</label>
+				<input data-parsley-class-handler="#equipment" name="EquipmentNeeds" data-parsley-required="true" type="checkbox" value="Wired internet (MSAC has WiFi)">Wired internet (MSAC has WiFi)</label>
 				<label class="checkbox">
-				<input data-parsley-class-handler="#equipment" name="equipment" data-parsley-required="true" type="checkbox" value="No equipment required">No equipment required</label>
+				<input data-parsley-class-handler="#equipment" name="EquipmentNeeds" data-parsley-required="true" type="checkbox" value="No equipment required">No equipment required</label>
 			</div>
 		</fieldset>
 		<fieldset class="control-group" id="set-up">
 			<legend>Room Set-Up</legend>
 			<label class="checkbox">
-				<input name="set-up" type="checkbox" value="Meeting around a table">Meeting around a table</label>
+				<input name="RoomSetUp" type="checkbox" value="Meeting around a table">Meeting around a table</label>
 				<label class="checkbox">
-				<input name="set-up" type="checkbox" value="Chairs in rows (theatre seating)">Chairs in rows (theatre seating)</label>
+				<input name="RoomSetUp" type="checkbox" value="Chairs in rows (theatre seating)">Chairs in rows (theatre seating)</label>
 				<label class="checkbox">
-				<input name="set-up" type="checkbox" value="Tables/counter for food">Tables/counter for food</label>
+				<input name="RoomSetUp" type="checkbox" value="Tables/counter for food">Tables/counter for food</label>
 		</fieldset>
 		<fieldset class="control-group">
 			<label for="notes">OTHER NOTES &amp; INFO to your MSAC support team:</label>
 			<textarea cols="50" name="notes" rows="6"></textarea>
 		</fieldset>
+		<input type="hidden" id="submissionDate" name="submissionDate">
 		<button class="btn btn-primary" type="submit" value="validate">Submit</button>
 	</form>
+	<div class="success hide">
+		<h4>Room request submitted</h4>
+		<p>MSAC has been notified of your booking request.</p>
+	</div>
 </body>
 </html>
