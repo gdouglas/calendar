@@ -7,6 +7,7 @@
 	<link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.22/themes/redmond/jquery-ui.css" rel="stylesheet" type="text/css">
 	<script src='http://collab.sites.olt.ubc.ca/wp-includes/js/jquery/jquery.js?ver=1.12.4' type='text/javascript'></script>
 	<script src='dist/form.min.js'></script>
+	<script type="text/javascript" src="https://mednet.med.ubc.ca/scripts/mednet.js"></script>
 	<script>
 	var otherVC = false;
 		jQuery(document).ready(function() {
@@ -66,6 +67,7 @@
 			})
 			.on('form:success',function(e){
 				console.log("success, submit to https://forms.mednet.med.ubc.ca/sites/alumni/_api/Web/lists/GetByTitle('MSACBookingForm')");
+				// mednetUtils.sp.createNew("https://forms.mednet.med.ubc.ca/sites/alumni/","MSACBookingForm");
 				return false;
 			});
 		});
